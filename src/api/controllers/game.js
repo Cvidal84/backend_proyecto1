@@ -7,7 +7,7 @@ const getGames = async (req, res, next) =>{
         const games = await Game.find();
         return res.status(200).json(games); //para traerme los juegos
     } catch (error) {
-        return res.status(400).json("error");
+        return res.status(400).json("Error ⚠️");
     }
 }
 
@@ -15,9 +15,12 @@ const postGame = async (req, res, next) =>{
     try {
         const newGame = new Game(req.body); //lo traemos del body que le pasamos
         const gameSaved = await newGame.save();//lo guardamos
-        return res.status(201).json(`The game ${gameSaved} was successfully posted✅`);
+        return res.status(201).json({
+        message: `The game ${gameSaved.title} was successfully posted ✅`,
+        game: gameSaved
+        });
     } catch (error) {
-        return res.status(400).json("error");
+        return res.status(400).json("Error ⚠️");
     }
 }
 
@@ -27,9 +30,12 @@ const updateGame = async (req, res, next) =>{
         const newGame = new Game(req.body);
         newGame._id = id;
         const gameUpdated = await Game.findByIdAndUpdate(id, newGame,{new: true});
-        return res.status(200).json(`The game ${gameUpdated} was successfully updated✅`);
+        return res.status(200).json({
+        message: `The game ${gameUpdated.title} was successfully updated ✅`,
+        game: gameUpdated
+        });
     } catch (error) {
-        return res.status(400).json("error");
+        return res.status(400).json("Error ⚠️");
     }
 }
 
@@ -37,9 +43,12 @@ const deleteGame = async (req, res, next) =>{
     try {
         const {id} = req.params;
         const gameDeleted = await Game.findByIdAndDelete(id);
-        return res.status(200).json(`The game ${gameDeleted} was successfully deleted✅`)
+        return res.status(200).json({
+        message: `The game ${gameDeleted.title} was successfully deleted ✅`,
+        game: gameDeleted
+        });
     } catch (error) {
-        return res.status(400).json("error");
+        return res.status(400).json("Error ⚠️");
     }
 }
 

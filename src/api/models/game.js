@@ -11,4 +11,4 @@ const gameSchema = new mongoose.Schema({
 
 //creo el modelo, siempre con mayúscula
 const Game = mongoose.model("games", gameSchema, "games");
-module.exports = { Game }
+module.exports = { Game };
