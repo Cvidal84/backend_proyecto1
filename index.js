@@ -5,6 +5,7 @@ const express = require("express");
 const { connectDB } = require("./src/config/db");//importamos para usar la funcion de bd.js
 const { gamesRouter } = require("./src/api/routes/game");
 const { platformsRouter } = require("./src/api/routes/platform");
+const { usersRouter } = require("./src/api/routes/user");
 const app = express();
 
 //conectar a la bbdd
@@ -16,6 +17,7 @@ app.use(express.json());
 //despues de hacer las rutas en el games las llamamos aquí. luego platforms
 app.use("/api/v1/games", gamesRouter)
 app.use("/api/v1/platforms", platformsRouter)
+app.use("/api/v1/users", usersRouter)
 
 //hacemos una prueba de que funcione con un /saludar
 app.use("/saludar", (req, res, next) =>{

@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 const platformSchema = new mongoose.Schema({
     name: {type: String, required:true, trim:true},
-    releaseYear: {type: Number, required:true, trim:true}
+    releaseYear: {type: Number, required:true, trim:true},
+    games: [{type: mongoose.Types.ObjectId, ref:"games"}]
 }, {
     timestamps:true,
 })
