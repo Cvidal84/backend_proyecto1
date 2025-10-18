@@ -53,7 +53,7 @@ const getUsers = async (req, res, next) =>{
     }
 }
 
-//hay que crear una funcion para que los admin puedan cambiar a los user a admni pero los users no.
+//funcion para modificar los usuarios
 const updateUser = async (req, res, next) =>{
     try {
         const {id} = req.params;
