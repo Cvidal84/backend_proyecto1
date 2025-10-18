@@ -1,5 +1,6 @@
 //CRUD CREATE READ UPDATE DELETE
 
+const { deleteFile } = require("../../utils/deleteFile/deleteFile");
 const { Game } = require("../models/game");//al usar esto en el get lo traemos automaticamente
 
 const getGames = async (req, res, next) =>{
@@ -14,6 +15,11 @@ const getGames = async (req, res, next) =>{
 const postGame = async (req, res, next) =>{
     try {
         const newGame = new Game(req.body); //lo traemos del body que le pasamos
+
+        if (req.file) {
+            newGame.img = req.file.path;
+        }
+
         const gameSaved = await newGame.save();//lo guardamos
         return res.status(201).json({
         message: `The game ${gameSaved.title} was successfully posted ✅`,
@@ -43,6 +49,9 @@ const deleteGame = async (req, res, next) =>{
     try {
         const {id} = req.params;
         const gameDeleted = await Game.findByIdAndDelete(id);
+
+        //borramos la imagen del cloudinary
+        deleteFile(gameDeleted.img);
         return res.status(200).json({
         message: `The game ${gameDeleted.title} was successfully deleted ✅`,
         game: gameDeleted

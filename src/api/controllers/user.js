@@ -43,9 +43,20 @@ const login = async (req, res, next) =>{
     }
 }
 
+//vamos a hacer que se puedan ver todos los usuarios para la autentificacion
+const getUsers = async (req, res, next) =>{
+    try {
+        const users = await User.find();
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(400).json("Error ⚠️");
+    }
+}
+
 
 
 module.exports = {
     register,
     login,
+    getUsers
     }

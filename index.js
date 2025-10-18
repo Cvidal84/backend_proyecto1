@@ -6,10 +6,13 @@ const { connectDB } = require("./src/config/db");//importamos para usar la funci
 const { gamesRouter } = require("./src/api/routes/game");
 const { platformsRouter } = require("./src/api/routes/platform");
 const { usersRouter } = require("./src/api/routes/user");
+const { connectCloudinary } = require("./src/config/cloudinary");
 const app = express();
 
 //conectar a la bbdd
 connectDB();
+//conectamos a cloudinary
+connectCloudinary();
 
 //con esto podemos usar .json en nuestro server
 app.use(express.json());
