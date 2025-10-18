@@ -53,10 +53,27 @@ const getUsers = async (req, res, next) =>{
     }
 }
 
+//hay que crear una funcion para que los admin puedan cambiar a los user a admni pero los users no.
+const updateUser = async (req, res, next) =>{
+    try {
+        const {id} = req.params;
+        const newUser = new User(req.body);
+        newUser._id = id;
+        const userUpdated = await User.findByIdAndUpdate(id, newUser, {new:true});
+        return res.status(200).json({
+            message: `The user  ${userUpdated.name} was successfully updated ✅`,
+            user: userUpdated
+        })     
+    } catch (error) {
+        return res.status(400).json("Error ⚠️");
+    }
+}
+
 
 
 module.exports = {
     register,
     login,
-    getUsers
+    getUsers,
+    updateUser
     }
