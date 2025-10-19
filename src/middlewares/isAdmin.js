@@ -1,11 +1,13 @@
-//una función que solo deja editar el perfil del usuario si eres admin, si eres user no puedes hacer nada.
-
 const isAdmin = (req, res, next) => {
+  // asegúrate de que exista req.body (DELETE suele venir sin body)
+  req.body = req.body || {};
 
   // Si es admin, puede hacer cualquier cosa
   if (req.user.role === "admin") {
-    // si el admin se edita a sí mismo, mantenemos su rol
-    if (req.params.id && String(req.params.id) === String(req.user._id)) {
+    // solo en PUT/PATCH y si se edita a sí mismo, mantenemos su rol
+    if ((req.method === "PUT")
+        && req.params.id
+        && String(req.params.id) === String(req.user._id)) {
       req.body.role = "admin";
     }
     return next();
@@ -14,7 +16,12 @@ const isAdmin = (req, res, next) => {
   // Si es user
   if (req.user.role === "user") {
     if (req.params.id && String(req.params.id) !== String(req.user._id)) {
-      return res.status(403).json("No puedes editar a otro usuario ❌");
+      return res.status(403).json("No puedes editar o eliminar a otro usuario ❌");
+    }
+
+    // En DELETE puede borrarse a sí mismo (no hay body)
+    if (req.method === "DELETE") {
+      return next();
     }
 
     const { email, password } = req.body;
@@ -24,6 +31,8 @@ const isAdmin = (req, res, next) => {
 
     return res.status(403).json("Sólo tienes permitido cambiar tu email o contraseña ⚠️");
   }
+
+  return res.status(403).json("No tienes permisos ❌");
 };
 
 module.exports = { isAdmin };
