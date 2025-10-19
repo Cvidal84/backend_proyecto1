@@ -59,6 +59,9 @@ const updateUser = async (req, res, next) =>{
         const {id} = req.params;
         const newUser = new User(req.body);
         newUser._id = id;
+        if(req.user.role === "admin"){
+            newUser.role = "admin";
+        }
         const userUpdated = await User.findByIdAndUpdate(id, newUser, {new:true});
         return res.status(200).json({
             message: `The user  ${userUpdated.name} was successfully updated ✅`,
